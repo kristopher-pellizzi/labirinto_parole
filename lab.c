@@ -73,7 +73,7 @@ int elimin(char* parola_a,char* parola_b){
 	lung_b=len(parola_b);
 	if(lung_b!=lung_a-1)
 		return 0;
-	while(i<lung_b){
+	while(i<lung_b && j<lung_a){
 		if(parola_b[i]!=parola_a[j]){
 			conta++;
 			i--;
@@ -120,7 +120,7 @@ void risolvi(char* nome_file){
 	char* parole[conta_parole(nome_file)];
 	char** parole_ord;
 	char* parola,*tmp;
-	int ret,i=0,k=0,j=0,conta;
+	int ret,i=0,k=0,j=0,conta,ult_ind=0;
 	fh=fopen(nome_file,"r");
 	parola=malloc(sizeof(char)*max_l);
 	conta=conta_parole(nome_file);
@@ -133,8 +133,12 @@ void risolvi(char* nome_file){
 	}
 	fclose(fh);
 	parole_ord=malloc(sizeof(char*)*conta);
-	parole_ord[k]=malloc(sizeof(char)*len(parole[k]));
+	parole_ord[k]=malloc(sizeof(char)*len(parole[k])+1);
 	strcpy(parole_ord[k],parole[k]);
+	i=1;
+	//}
+	//for(i=0;i<conta;i++)
+	//	printf("%s\n",parole_ord[i]);
 }
 
 int main(){
