@@ -115,16 +115,29 @@ int conta_parole(char* nome_file){
 	return conta-1;
 }
 
+int in(int num, int len, int *array){
+	int i,cont=0;
+	for(i=0;i<len;i++){
+		if(num==array[i])
+			return 1;
+	}
+	return 0;
+}
+
 void risolvi(char* nome_file){
 	FILE* fh;
 	char* parole[conta_parole(nome_file)];
 	char** parole_ord;
 	char* parola,*tmp;
-	int ret,i=0,k=0,j=0,conta,ult_ind=0;
+	int ret,i=0,k=0,j=0,conta;
+	int indici[conta_parole(nome_file)];
 	fh=fopen(nome_file,"r");
 	parola=malloc(sizeof(char)*max_l);
 	conta=conta_parole(nome_file);
+	for(i=0;i<conta;i++)
+		indici[i]=0;
 	ret=fscanf(fh,"%s",parola);
+	i=0;
 	while(ret!=EOF){
 		parole[i]=malloc((sizeof(char)*len(parola))+1);
 		strcpy(parole[i],parola);
@@ -132,18 +145,31 @@ void risolvi(char* nome_file){
 		ret=fscanf(fh,"%s",parola);
 	}
 	fclose(fh);
+	for(i=0;i<conta;i++)
+		printf("%s\n",parole[i]);
 	parole_ord=malloc(sizeof(char*)*conta);
 	parole_ord[k]=malloc(sizeof(char)*len(parole[k])+1);
 	strcpy(parole_ord[k],parole[k]);
 	i=1;
-	//}
-	//for(i=0;i<conta;i++)
-	//	printf("%s\n",parole_ord[i]);
+	while(i<conta && k<conta){
+		if(controllo(parole_ord[k],parole[i]) && !in(i,conta,indici)){
+			printf("YES\n");
+			k++;
+			parole_ord[k]=malloc(sizeof(char)*len(parole[i])+1);
+			strcpy(parole_ord[k],parole[i]);
+			indici[j++]=i;
+			i=0;
+		}
+		i++;
+	}
+	for(i=0;i<conta;i++)
+		printf("%s\n",parole_ord[i]);
 }
 
 int main(){
 	int i;
 	char** parole;
+	int arr[3]={1,3,2};
 	risolvi("parole.txt");
 	//for(i=0;i<conta_parole("parole.txt");i++){
 	//	printf("%s\n",parole[i]);
