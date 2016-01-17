@@ -88,6 +88,8 @@ int elimin(char* parola_a,char* parola_b){
 
 int controllo(char* parola_a, char* parola_b){
 	int conta_r=0;
+	if(strcmp(parola_a,parola_b)==0)
+		return 0;
 	if(anagramma(parola_a,parola_b))
 		conta_r++;
 	if(sostit(parola_a,parola_b))
@@ -124,14 +126,23 @@ int in(int num, int len, int *array){
 	return 0;
 }
 
+int in_list(char* parola, int len, char** lista){
+	int i;
+	for(i=0;i<len;i++)
+		if(strcmp(parola,lista[i])==0)
+			return 1;
+	return 0;
+}
+
 void risolvi(char* nome_file){
 	FILE* fh;
 	char* parole[conta_parole(nome_file)];
 	char** parole_ord;
-	char* last_attempt,*last_poss;
+	char*last_poss;
 	char* parola,*tmp;
 	int ret,i=0,k=0,j=0,conta;
 	int indici[conta_parole(nome_file)];
+	int last_attempt=0;
 	fh=fopen(nome_file,"r");
 	parola=malloc(sizeof(char)*max_l);
 	conta=conta_parole(nome_file);
@@ -146,32 +157,37 @@ void risolvi(char* nome_file){
 	fclose(fh);
 	for(i=0;i<conta;i++)
 		printf("%s\n",parole[i]);
-	last_attempt=parole[0];
 	parole_ord=malloc(sizeof(char*)*conta);
 	k=0;
 	parole_ord[k]=malloc(sizeof(char)*len(parole[k])+1);
 	strcpy(parole_ord[k],parole[k]);
-	while(parole_ord[conta-1]==NULL && last_attempt!=last_poss){
-		for(i=0;i<conta;i++)
-			indici[i]=0;
-		for(i=1;i<conta;i++)
-			if(controllo(parole_ord[k],parole[i])){
-				last_poss=parole[i];
-			}
+	for(i=1;i<conta;i++)
+		if(controllo(parole_ord[k],parole[i])){
+			last_poss=parole[i];
+		}
+	for(i=0;i<conta;i++)
+		indici[i]=0;
+	while(parole_ord[conta-1]==NULL && parole_ord[1]!=last_poss){
 		i=1;
 		j=0;
 		while(i<conta){
-			if(controllo(parole_ord[k],parole[i]) && !in(i,conta,indici) && parole[i]!=last_attempt){
+			if(controllo(parole_ord[k],parole[i]) && !in(i,conta,indici) && i>last_attempt){
 				k++;
+				last_attempt=0;
 				parole_ord[k]=malloc(sizeof(char)*len(parole[i])+1);
 				strcpy(parole_ord[k],parole[i]);
-				indici[j++]=i;
+				indici[i]=i;
 				i=0;
 			}
 			i++;
 		}
-		if(parole_ord[conta-1]==NULL){
-			last_attempt=parole[k];
+		if(parole_ord[conta-1]==NULL && k>0){
+			for(i=0;i<conta;i++)
+				if(strcmp(parole[i],parole_ord[k])==0){
+					indici[i]=0;
+					last_attempt=i;
+				}
+			parole_ord[k]=NULL;
 			k--;
 		}
 	}
@@ -189,6 +205,7 @@ int main(){
 	char* null;
 	int arr[3]={1,3,2};
 	null=NULL;
+//	printf("%d\n",!in(4,3,arr));
 	risolvi("parole.txt");
 	//for(i=0;i<conta_parole("parole.txt");i++){
 	//	printf("%s\n",parole[i]);
