@@ -1,0 +1,16 @@
+1)Anagrammi
+2)sostituzioni (carro - corro)
+3)Aggiunta (Coro - Corro)
+4)Rimozione
+
+prima parola del file è la prima parola della catena
+
+lettura/scrittura file in c:
+FILE* fp;
+fp=fopen("file.txt","x"); //x= R(read)/W(write)/A(append)
+if(fp==NULL) //non ho aperto nessun file, termino
+	return 0;
+fprintf(fp,"%d",i); //output: scrivi valore di i sul file sul file
+fscanf(fp,"%d",&i);
+
+fclose(fp);
