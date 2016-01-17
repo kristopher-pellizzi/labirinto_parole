@@ -128,14 +128,13 @@ void risolvi(char* nome_file){
 	FILE* fh;
 	char* parole[conta_parole(nome_file)];
 	char** parole_ord;
+	char* last_attempt,*last_poss;
 	char* parola,*tmp;
 	int ret,i=0,k=0,j=0,conta;
 	int indici[conta_parole(nome_file)];
 	fh=fopen(nome_file,"r");
 	parola=malloc(sizeof(char)*max_l);
 	conta=conta_parole(nome_file);
-	for(i=0;i<conta;i++)
-		indici[i]=0;
 	ret=fscanf(fh,"%s",parola);
 	i=0;
 	while(ret!=EOF){
@@ -147,30 +146,49 @@ void risolvi(char* nome_file){
 	fclose(fh);
 	for(i=0;i<conta;i++)
 		printf("%s\n",parole[i]);
+	last_attempt=parole[0];
 	parole_ord=malloc(sizeof(char*)*conta);
+	k=0;
 	parole_ord[k]=malloc(sizeof(char)*len(parole[k])+1);
 	strcpy(parole_ord[k],parole[k]);
-	i=1;
-	j=0;
-	while(i<conta){
-		if(controllo(parole_ord[k],parole[i]) && !in(i,conta,indici)){
-			k++;
-			parole_ord[k]=malloc(sizeof(char)*len(parole[i])+1);
-			strcpy(parole_ord[k],parole[i]);
-			indici[j++]=i;
-			i=0;
+	while(parole_ord[conta-1]==NULL && last_attempt!=last_poss){
+		for(i=0;i<conta;i++)
+			indici[i]=0;
+		for(i=1;i<conta;i++)
+			if(controllo(parole_ord[k],parole[i])){
+				last_poss=parole[i];
+			}
+		i=1;
+		j=0;
+		while(i<conta){
+			if(controllo(parole_ord[k],parole[i]) && !in(i,conta,indici) && parole[i]!=last_attempt){
+				k++;
+				parole_ord[k]=malloc(sizeof(char)*len(parole[i])+1);
+				strcpy(parole_ord[k],parole[i]);
+				indici[j++]=i;
+				i=0;
+			}
+			i++;
 		}
-		i++;
+		if(parole_ord[conta-1]==NULL){
+			last_attempt=parole[k];
+			k--;
+		}
 	}
 	printf("\n");
-	for(i=0;i<conta;i++)
-		printf("%s\n",parole_ord[i]);
+	if(parole_ord[conta-1]==NULL)
+		printf("Il labirinto di parole non è risolvibile\n");
+	else
+		for(i=0;i<conta;i++)
+			printf("%s\n",parole_ord[i]);
 }
 
 int main(){
 	int i;
 	char** parole;
+	char* null;
 	int arr[3]={1,3,2};
+	null=NULL;
 	risolvi("parole.txt");
 	//for(i=0;i<conta_parole("parole.txt");i++){
 	//	printf("%s\n",parole[i]);
