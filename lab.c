@@ -39,7 +39,7 @@ int sostit(char* parola_a, char* parola_b){
 	if(lung_a!=lung_b)
 		return 0;
 	for(i=0;i<lung_a;i++)
-		if(!inside(parola_b[i],parola_a))
+		if(parola_b[i]!=parola_a[i])
 			conta++;
 	if(conta==1)
 		return 1;
@@ -151,9 +151,9 @@ void risolvi(char* nome_file){
 	parole_ord[k]=malloc(sizeof(char)*len(parole[k])+1);
 	strcpy(parole_ord[k],parole[k]);
 	i=1;
-	while(i<conta && k<conta){
+	j=0;
+	while(i<conta){
 		if(controllo(parole_ord[k],parole[i]) && !in(i,conta,indici)){
-			printf("YES\n");
 			k++;
 			parole_ord[k]=malloc(sizeof(char)*len(parole[i])+1);
 			strcpy(parole_ord[k],parole[i]);
@@ -162,6 +162,7 @@ void risolvi(char* nome_file){
 		}
 		i++;
 	}
+	printf("\n");
 	for(i=0;i<conta;i++)
 		printf("%s\n",parole_ord[i]);
 }
