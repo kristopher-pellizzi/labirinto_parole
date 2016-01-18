@@ -210,12 +210,6 @@ void risolvi(char* nome_file){
 }
 
 int main(){
-	int i;
-	char** parole;
-	char* null;
-	int arr[3]={1,3,2};
-	null=NULL;
-	printf("%d\n",anagramma("ciao","ciao"));
 	risolvi("parole.txt");
 	return 0;
 }
