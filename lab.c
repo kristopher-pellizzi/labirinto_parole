@@ -88,8 +88,6 @@ int elimin(char* parola_a,char* parola_b){
 
 int controllo(char* parola_a, char* parola_b){
 	int conta_r=0;
-	//if(strcmp(parola_a,parola_b)==0)
-	//	return 0;
 	if(anagramma(parola_a,parola_b))
 		conta_r++;
 	if(sostit(parola_a,parola_b))
