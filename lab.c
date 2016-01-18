@@ -88,8 +88,8 @@ int elimin(char* parola_a,char* parola_b){
 
 int controllo(char* parola_a, char* parola_b){
 	int conta_r=0;
-	if(strcmp(parola_a,parola_b)==0)
-		return 0;
+	//if(strcmp(parola_a,parola_b)==0)
+	//	return 0;
 	if(anagramma(parola_a,parola_b))
 		conta_r++;
 	if(sostit(parola_a,parola_b))
@@ -138,11 +138,11 @@ void risolvi(char* nome_file){
 	FILE* fh;
 	char* parole[conta_parole(nome_file)];
 	char** parole_ord;
-	char*last_poss;
+	char* last_poss;
 	char* parola,*tmp;
 	int ret,i=0,k=0,j=0,conta;
 	int indici[conta_parole(nome_file)];
-	int last_attempt=0;
+	int last_attempt=0,ver=1;
 	fh=fopen(nome_file,"r");
 	parola=malloc(sizeof(char)*max_l);
 	conta=conta_parole(nome_file);
@@ -158,6 +158,8 @@ void risolvi(char* nome_file){
 	for(i=0;i<conta;i++)
 		printf("%s\n",parole[i]);
 	parole_ord=malloc(sizeof(char*)*conta);
+	for(i=0;i<conta;i++)
+		parole_ord[i]=NULL;
 	k=0;
 	parole_ord[k]=malloc(sizeof(char)*len(parole[k])+1);
 	strcpy(parole_ord[k],parole[k]);
@@ -167,7 +169,7 @@ void risolvi(char* nome_file){
 		}
 	for(i=0;i<conta;i++)
 		indici[i]=0;
-	while(parole_ord[conta-1]==NULL && parole_ord[1]!=last_poss){
+	while(parole_ord[conta-1]==NULL && ver){
 		i=1;
 		j=0;
 		while(i<conta){
@@ -182,6 +184,8 @@ void risolvi(char* nome_file){
 			i++;
 		}
 		if(parole_ord[conta-1]==NULL && k>0){
+			if(k==1 && strcmp(parole_ord[k],last_poss)==0)
+				ver=0;
 			for(i=0;i<conta;i++)
 				if(strcmp(parole[i],parole_ord[k])==0){
 					indici[i]=0;
@@ -205,10 +209,7 @@ int main(){
 	char* null;
 	int arr[3]={1,3,2};
 	null=NULL;
-//	printf("%d\n",!in(4,3,arr));
+	printf("%d\n",anagramma("ciao","ciao"));
 	risolvi("parole.txt");
-	//for(i=0;i<conta_parole("parole.txt");i++){
-	//	printf("%s\n",parole[i]);
-	//}
 	return 0;
 }
