@@ -189,6 +189,7 @@ void risolvi(char* nome_file){
 					indici[i]=0;
 					last_attempt=i;
 				}
+			free(parole_ord[k]);
 			parole_ord[k]=NULL;
 			k--;
 		}
@@ -199,6 +200,13 @@ void risolvi(char* nome_file){
 	else
 		for(i=0;i<conta;i++)
 			printf("%s\n",parole_ord[i]);
+	fh=fopen("solution.txt","w");
+	for(i=0;i<conta;i++){
+		fprintf(fh,"%s",parole_ord[i]);
+		fprintf(fh,"%c",'\n');
+	}
+	fclose(fh);
+	
 }
 
 int main(){
