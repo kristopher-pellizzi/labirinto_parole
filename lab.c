@@ -153,8 +153,6 @@ void risolvi(char* nome_file){
 		ret=fscanf(fh,"%s",parola);
 	}
 	fclose(fh);
-	for(i=0;i<conta;i++)
-		printf("%s\n",parole[i]);
 	parole_ord=malloc(sizeof(char*)*conta);
 	for(i=0;i<conta;i++)
 		parole_ord[i]=NULL;
@@ -194,19 +192,15 @@ void risolvi(char* nome_file){
 			k--;
 		}
 	}
-	printf("\n");
 	if(parole_ord[conta-1]==NULL)
 		printf("Il labirinto di parole non è risolvibile\n");
-	else
-		for(i=0;i<conta;i++)
-			printf("%s\n",parole_ord[i]);
 	fh=fopen("solution.txt","w");
 	for(i=0;i<conta;i++){
 		fprintf(fh,"%s",parole_ord[i]);
 		fprintf(fh,"%c",'\n');
 	}
 	fclose(fh);
-	
+	printf("E stato creato il file 'solution.txt' che contiene la soluzione del labirinto di parole\n");	
 }
 
 int main(){
